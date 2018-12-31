@@ -68,6 +68,6 @@ class SortByAny
 
         $fd = $this->getFlattenedArray($d);
 
-        var_dump($fd);
+
     }
 }
