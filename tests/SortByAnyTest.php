@@ -41,17 +41,48 @@ class SortByAnyTest extends TestCase
         }
     }
 
-    public function testMinimumArraySize()
+    public function testMinimumArraySizeError()
     {
         $a = [1];
         $si = new \Rolfisub\SortByAny\Entity\SortInput(["test"]);
         $sba = new \Rolfisub\SortByAny\SortByAny($si);
-        try{
+        try {
             $sba->sortByAny($a);
             //fail the test
             $this->assertTrue(false);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             $this->assertTrue(is_object($e));
         }
     }
+
+    public function testOutput()
+    {
+        $d = [
+            [
+                "a" => 1,
+                "b" => [
+                    "c" => "c"
+                ]
+            ],
+            [
+                "a" => 2,
+                "b" => [
+                    "c" => "c",
+                    "d" => [
+                        "e" => "e"
+                    ]
+                ]
+
+            ]
+        ];
+
+        $si = new \Rolfisub\SortByAny\Entity\SortInput(["a"]);
+        $sba = new \Rolfisub\SortByAny\SortByAny($si);
+        $sba->sortByAny($d);
+
+        $this->assertTrue(true);
+
+
+    }
+
 }

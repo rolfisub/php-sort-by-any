@@ -4,6 +4,7 @@ namespace Rolfisub\SortByAny;
 
 
 use Rolfisub\SortByAny\Entity\SortInput;
+use Rolfisub\ArrayFlatten\ArrayFlatten;
 
 /**
  * Class SortByAny
@@ -39,25 +40,6 @@ class SortByAny
         $this->sortInput = $sortInput;
     }
 
-
-    /**
-     * @param array $a
-     * @return array
-     */
-    private function flattenArray(array $a)
-    {
-        $r = [];
-        foreach ($a as $key => $value) {
-            if (!is_array($value)) {
-                $r[$key] = $value;
-            } else {
-                array_merge($r, $this->flattenArray($value));
-            }
-        }
-        return $r;
-    }
-
-
     /**
      * @param array $d
      * @return array
@@ -66,7 +48,7 @@ class SortByAny
     {
         $r = [];
         foreach ($d as $key => $value) {
-            array_push($r, $this->flattenArray($value));
+            array_push($r, ArrayFlatten::flatten($value));
         }
         return $r;
     }
