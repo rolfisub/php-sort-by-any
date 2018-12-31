@@ -1,0 +1,24 @@
+{
+    "name": "rolfisub/php-sort-by-any",
+    "description": "Sort an array by any field, regardless of where in the structure it is.",
+    "keywords": ["multi level","data structure","sort", "composer", "package"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rolf Bansbach",
+            "email": "rolfisub@gmail.com"
+        }
+    ],
+    "type": "library",
+    "require": {
+		"php": ">=7.1"
+    },
+    "require-dev": {
+		"phpunit/phpunit": "6.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rolfisub\\SortByAny\\": "src/"
+        }
+    }
+}
