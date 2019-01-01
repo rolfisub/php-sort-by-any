@@ -2,7 +2,6 @@
 
 namespace Rolfisub\SortByAny;
 
-
 use Rolfisub\SortByAny\Entity\SortInput;
 use Rolfisub\ArrayFlatten\ArrayFlatten;
 
@@ -46,20 +45,21 @@ class SortByAny
      */
     private function getFlattenedArray(array $d)
     {
-        $r = [];
-        foreach ($d as $key => $value) {
-            array_push($r, ArrayFlatten::flatten($value));
-        }
-        return $r;
+        return array_map(function ($a) {
+            return ArrayFlatten::flatten($a);
+        }, $d);
     }
 
     /**
      * @param array $d
+     * @return array
      * @throws \Exception
      */
     public function sortByAny(array $d)
     {
-        if (sizeof($this->sortInput->getFields()) < 1) {
+        $fields = $this->sortInput->getFields();
+
+        if (sizeof($fields) < 1) {
             throw new \Exception("Need to sort at least by one field");
         }
         if (sizeof($d) < 2) {
@@ -68,6 +68,84 @@ class SortByAny
 
         $fd = $this->getFlattenedArray($d);
 
+        $order = $this->sortInput->getOrder() === 'asc' ? SORT_ASC : SORT_DESC;
+        $args = [];
 
+        foreach ($fields as $k => $f) {
+            array_push($args, array_column($fd, $f));
+            array_push($args, $order);
+        }
+
+        $argsCount = sizeof($args);
+        /**
+         * support up to 5 fields
+         */
+        switch ($argsCount) {
+            case 2:
+                {
+                    array_multisort($args[0], $args[1], $d);
+                    return $d;
+                }
+            case 4:
+                {
+                    array_multisort(
+                        $args[0],
+                        $args[1],
+                        $args[2],
+                        $args[3],
+                        $d
+                    );
+                    return $d;
+                }
+            case 6:
+                {
+                    array_multisort(
+                        $args[0],
+                        $args[1],
+                        $args[2],
+                        $args[3],
+                        $args[4],
+                        $args[5],
+                        $d
+                    );
+                    return $d;
+                }
+            case 8:
+                {
+                    array_multisort(
+                        $args[0],
+                        $args[1],
+                        $args[2],
+                        $args[3],
+                        $args[4],
+                        $args[5],
+                        $args[6],
+                        $args[7],
+                        $d
+                    );
+                    return $d;
+                }
+            case 10:
+                {
+                    array_multisort(
+                        $args[0],
+                        $args[1],
+                        $args[2],
+                        $args[3],
+                        $args[4],
+                        $args[5],
+                        $args[6],
+                        $args[7],
+                        $args[8],
+                        $args[9],
+                        $d
+                    );
+                    return $d;
+                }
+            default:
+                {
+                    throw new \Exception("invalid amount of arguments passed to sort function");
+                }
+        }
     }
 }
